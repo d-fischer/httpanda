@@ -1,8 +1,8 @@
 {
-  "name": "LIBRARY_NAME",
+  "name": "httpanda",
   "version": "0.0.0",
-  "description": "",
-  "keywords": [],
+  "description": "A frugal HTTP server for simple tasks.",
+  "keywords": ["http", "server", "express", "web", "rest", "router", "api", "connect"],
   "main": "lib",
   "types": "lib",
   "module": "es",
@@ -15,7 +15,7 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/d-fischer/LIBRARY_NAME.git"
+    "url": "https://github.com/d-fischer/httpanda.git"
   },
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "funding": "https://github.com/sponsors/d-fischer",
