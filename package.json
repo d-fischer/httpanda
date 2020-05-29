@@ -1,0 +1,58 @@
+{
+  "name": "LIBRARY_NAME",
+  "version": "0.0.0",
+  "description": "",
+  "keywords": [],
+  "main": "lib",
+  "types": "lib",
+  "module": "es",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./es/index.mjs"
+    }
+  },
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d-fischer/LIBRARY_NAME.git"
+  },
+  "author": "Daniel Fischer <daniel@d-fischer.dev>",
+  "funding": "https://github.com/sponsors/d-fischer",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^14.0.5",
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "@d-fischer/eslint-config": "^1.0.6",
+    "eslint": "^6.7.1",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.7",
+    "prettier": "^2.0.5",
+    "tsukuru": "^0.4.0",
+    "typescript": "~3.9.3"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib",
+    "es"
+  ],
+  "scripts": {
+    "lint": "eslint --ext ts src",
+    "prettier:check": "prettier --check 'src/**'",
+    "prettier:fix": "prettier --write 'src/**'",
+    "build": "tsukuru",
+    "rebuild": "tsukuru --clean"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,json}": "prettier --write",
+    "*.{ts}": "eslint --fix"
+  }
+}
