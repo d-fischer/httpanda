@@ -1,6 +1,6 @@
 {
   "name": "httpanda",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A frugal HTTP server for simple tasks.",
   "keywords": [
     "http",
