@@ -1,19 +1,8 @@
-import { parseUrl } from './parseUrl';
-import { Request } from './Request';
-import { HttpMethod, RouteCallback, Router } from './Router';
-import { createServer, Server as HttpServer, ServerResponse, STATUS_CODES } from 'http';
+import { createServer, Server as HttpServer, STATUS_CODES } from 'http';
 import { ListenOptions } from 'net';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ErrorType = any;
-
-export type NextFunction = (e?: ErrorType) => void;
-export type ErrorHandler = (e: ErrorType, req: Request, res: ServerResponse, next: NextFunction) => void;
-
-export interface HttpServerOptions {
-	server?: HttpServer;
-	onError?: ErrorHandler;
-}
+import { parseUrl } from './parseUrl';
+import { Router } from './Router';
+import { ErrorHandler, HttpMethod, HttpServerOptions, NextFunction, Request, Response, RouteCallback } from './types';
 
 const defaultOnError: ErrorHandler = (e, req, res) => {
 	res.statusCode = e.code || e.status || 500;
@@ -71,7 +60,7 @@ export class Server extends Router {
 		return super.use(path, ...callbacks);
 	}
 
-	handleRequest = (req: Request, res: ServerResponse): void => {
+	handleRequest = (req: Request, res: Response): void => {
 		const parsedUrl = parseUrl(req);
 		const foundRoutes = this.find(req.method! as HttpMethod, parsedUrl.pathname);
 		foundRoutes.push({

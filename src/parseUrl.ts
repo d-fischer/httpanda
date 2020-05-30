@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { IncomingMessage } from 'http';
+import { Request } from './types';
 
 export interface ParsedUrl {
 	href: string;
@@ -10,13 +10,7 @@ export interface ParsedUrl {
 	/** @private */ _full: String;
 }
 
-declare module 'http' {
-	interface IncomingMessage {
-		/** @private */ _parseUrlCache?: ParsedUrl;
-	}
-}
-
-export function parseUrl(req: IncomingMessage): ParsedUrl {
+export function parseUrl(req: Request): ParsedUrl {
 	let url = req.url;
 	if (url === undefined) {
 		url = '/';

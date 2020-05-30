@@ -37,7 +37,7 @@ An error handler that takes the following arguments:
 
 - `e` - the error object
 - `req` - the request object (an instance of the internal `Request` type)
-- `res` - the response object (an instance of `http.ServerResponse`)
+- `res` - the response object (an instance of the internal `Response` type, currently equivalent to `http.ServerResponse`)
 - `next` - a function you can call to ignore the error and keep walking the middleware chain
 
 #### Example

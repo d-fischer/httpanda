@@ -1,23 +1,5 @@
-import { ServerResponse } from 'http';
-import { NextFunction } from './Server';
 import { pathToRegex } from './pathToRegex';
-import { Request } from './Request';
-
-export type RouteCallback = (req: Request, res: ServerResponse, next: NextFunction) => void;
-
-export type HttpMethod = 'HEAD' | 'OPTIONS' | 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'CONNECT' | 'TRACE';
-
-export interface RouteHandler {
-	regex: RegExp;
-	method?: HttpMethod;
-	paramNames: string[];
-	callbacks: RouteCallback[];
-}
-
-export interface FoundCallbacks {
-	params: Record<string, string>;
-	callbacks: RouteCallback[];
-}
+import { FoundCallbacks, HttpMethod, RouteCallback, RouteHandler } from './types';
 
 export class Router {
 	routes: RouteHandler[] = [];
