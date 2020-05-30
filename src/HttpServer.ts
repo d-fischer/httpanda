@@ -1,10 +1,14 @@
 import { parseUrl } from './parseUrl';
 import { Request } from './Request';
-import { HttpMethod, NextFunction, RouteCallback, Router } from './Router';
+import { HttpMethod, RouteCallback, Router } from './Router';
 import { createServer, Server, ServerResponse, STATUS_CODES } from 'http';
 import { ListenOptions } from 'net';
 
-export type ErrorHandler = (e: any, req: Request, res: ServerResponse, next: NextFunction) => void;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ErrorType = any;
+
+export type NextFunction = (e?: ErrorType) => void;
+export type ErrorHandler = (e: ErrorType, req: Request, res: ServerResponse, next: NextFunction) => void;
 
 export interface HttpServerOptions {
 	server?: Server;
@@ -43,8 +47,11 @@ export class HttpServer extends Router {
 	async listen(path: string, backlog?: number, listeningListener?: () => void): Promise<this>;
 	async listen(path: string, listeningListener?: () => void): Promise<this>;
 	async listen(options: ListenOptions, listeningListener?: () => void): Promise<this>;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	async listen(handle: any, backlog?: number, listeningListener?: () => void): Promise<this>;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	async listen(handle: any, listeningListener?: () => void): Promise<this>;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	async listen(...args: any[]): Promise<this> {
 		return new Promise((resolve, reject) => {
 			if (!this._httpServer) {
@@ -77,7 +84,7 @@ export class HttpServer extends Router {
 			callbacks: [this._on404],
 			params: {}
 		});
-		let routeCount = foundRoutes.length;
+		const routeCount = foundRoutes.length;
 		req.path = parsedUrl.pathname;
 		req.query = parsedUrl.query;
 		req.search = parsedUrl.search;
@@ -87,7 +94,7 @@ export class HttpServer extends Router {
 			callbackCountForRoute = foundRoutes[0].callbacks.length;
 		req.params = foundRoutes[0].params;
 		let loop: Function;
-		let next: NextFunction = e => {
+		const next: NextFunction = e => {
 			if (e) {
 				this._onError(e, req, res, next);
 			} else {

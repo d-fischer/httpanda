@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { IncomingMessage } from 'http';
 
 export interface ParsedUrl {

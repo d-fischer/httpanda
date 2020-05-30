@@ -1,9 +1,9 @@
-import { ErrorHandler, HttpServer, HttpServerOptions } from './HttpServer';
+// eslint-disable-next-line filenames/match-exported
+import { ErrorHandler, HttpServer, HttpServerOptions, NextFunction } from './HttpServer';
 import { ParsedUrl, parseUrl } from './parseUrl';
 import { Request } from './Request';
-import { HttpMethod, NextFunction, RouteCallback } from './Router';
+import { HttpMethod, RouteCallback } from './Router';
 
-export default HttpServer;
 export {
 	ErrorHandler,
 	HttpServer,

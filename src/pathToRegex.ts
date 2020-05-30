@@ -12,7 +12,7 @@ export function pathToRegex(path: string, strict = true): [RegExp, string[]] {
 			paramNames.push(part.substr(1));
 			re += '/([^/]+?)';
 		} else {
-			re += '/' + part;
+			re += `/${part}`;
 		}
 	}
 

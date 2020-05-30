@@ -1,8 +1,8 @@
 import { ServerResponse } from 'http';
+import { NextFunction } from './HttpServer';
 import { pathToRegex } from './pathToRegex';
 import { Request } from './Request';
 
-export type NextFunction = (e?: any) => void;
 export type RouteCallback = (req: Request, res: ServerResponse, next: NextFunction) => void;
 
 export type HttpMethod = 'HEAD' | 'OPTIONS' | 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'CONNECT' | 'TRACE';
