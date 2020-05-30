@@ -36,17 +36,15 @@ export class Server extends Router {
 		this._on404 = this._onError.bind(null, { code: 404 });
 	}
 
-	async listen(port?: number, hostname?: string, backlog?: number, listeningListener?: () => void): Promise<this>;
-	async listen(port?: number, hostname?: string, listeningListener?: () => void): Promise<this>;
-	async listen(port?: number, backlog?: number, listeningListener?: () => void): Promise<this>;
-	async listen(port?: number, listeningListener?: () => void): Promise<this>;
-	async listen(path: string, backlog?: number, listeningListener?: () => void): Promise<this>;
-	async listen(path: string, listeningListener?: () => void): Promise<this>;
-	async listen(options: ListenOptions, listeningListener?: () => void): Promise<this>;
+	async listen(port?: number, hostname?: string, backlog?: number): Promise<this>;
+	async listen(port?: number, hostname?: string): Promise<this>;
+	async listen(port?: number, backlog?: number): Promise<this>;
+	async listen(port?: number): Promise<this>;
+	async listen(options: ListenOptions): Promise<this>;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	async listen(handle: any, backlog?: number, listeningListener?: () => void): Promise<this>;
+	async listen(handle: any, backlog?: number): Promise<this>;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	async listen(handle: any, listeningListener?: () => void): Promise<this>;
+	async listen(handle: any): Promise<this>;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	async listen(...args: any[]): Promise<this> {
 		return new Promise((resolve, reject) => {
