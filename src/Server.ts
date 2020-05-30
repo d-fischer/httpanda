@@ -51,6 +51,22 @@ export class Server extends Router {
 		});
 	}
 
+	async close() {
+		return new Promise((resolve, reject) => {
+			if (!this._httpServer) {
+				reject('Server not open when trying to close');
+				return;
+			}
+			this._httpServer.close(e => {
+				if (e) {
+					reject(e);
+				} else {
+					resolve();
+				}
+			});
+		});
+	}
+
 	use(...fns: RouteCallback[]): this;
 	use(path: string, ...fns: RouteCallback[]): this;
 	use(pathOrFn: RouteCallback | string, ...fns: RouteCallback[]): this {
