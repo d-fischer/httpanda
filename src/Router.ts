@@ -1,5 +1,5 @@
 import { ServerResponse } from 'http';
-import { NextFunction } from './HttpServer';
+import { NextFunction } from './Server';
 import { pathToRegex } from './pathToRegex';
 import { Request } from './Request';
 

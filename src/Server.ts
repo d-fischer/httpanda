@@ -1,7 +1,7 @@
 import { parseUrl } from './parseUrl';
 import { Request } from './Request';
 import { HttpMethod, RouteCallback, Router } from './Router';
-import { createServer, Server, ServerResponse, STATUS_CODES } from 'http';
+import { createServer, Server as HttpServer, ServerResponse, STATUS_CODES } from 'http';
 import { ListenOptions } from 'net';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -11,7 +11,7 @@ export type NextFunction = (e?: ErrorType) => void;
 export type ErrorHandler = (e: ErrorType, req: Request, res: ServerResponse, next: NextFunction) => void;
 
 export interface HttpServerOptions {
-	server?: Server;
+	server?: HttpServer;
 	onError?: ErrorHandler;
 }
 
@@ -24,8 +24,8 @@ const defaultOnError: ErrorHandler = (e, req, res) => {
 	}
 };
 
-export class HttpServer extends Router {
-	private _httpServer?: Server;
+export class Server extends Router {
+	private _httpServer?: HttpServer;
 	private readonly _onError: ErrorHandler;
 	private readonly _on404: RouteCallback;
 
