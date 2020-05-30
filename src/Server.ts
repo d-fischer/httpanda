@@ -109,7 +109,7 @@ export class Server extends Router {
 						req.params = foundRoutes[i].params;
 						callbackCountForRoute = foundRoutes[i].callbacks.length;
 					}
-					foundRoutes[i].callbacks[j](req, res, next);
+					foundRoutes[i].callbacks[j++](req, res, next);
 				}
 			};
 
