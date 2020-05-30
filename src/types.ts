@@ -22,7 +22,7 @@ export interface HttpServerOptions {
 	onError?: ErrorHandler;
 }
 
-export type RouteCallback = (req: Request, res: ServerResponse, next: NextFunction) => void;
+export type RouteCallback = (req: Request, res: Response, next: NextFunction) => void;
 export type HttpMethod = 'HEAD' | 'OPTIONS' | 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'CONNECT' | 'TRACE';
 
 export interface RouteHandler {
