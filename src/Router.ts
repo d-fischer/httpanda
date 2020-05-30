@@ -22,6 +22,17 @@ export interface FoundCallbacks {
 export class Router {
 	routes: RouteHandler[] = [];
 
+	all = this.add.bind(this, undefined);
+	head = this.add.bind(this, 'HEAD');
+	options = this.add.bind(this, 'OPTIONS');
+	get = this.add.bind(this, 'GET');
+	post = this.add.bind(this, 'POST');
+	put = this.add.bind(this, 'PUT');
+	patch = this.add.bind(this, 'PATCH');
+	delete = this.add.bind(this, 'DELETE');
+	connect = this.add.bind(this, 'CONNECT');
+	trace = this.add.bind(this, 'TRACE');
+
 	use(path: string, ...callbacks: RouteCallback[]) {
 		if (callbacks.length) {
 			const [regex, paramNames] = pathToRegex(path, false);

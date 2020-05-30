@@ -29,10 +29,6 @@ export class HttpServer extends Router {
 	private readonly _onError: ErrorHandler;
 	private readonly _on404: RouteCallback;
 
-	all = this.add.bind(this, undefined);
-	get = this.add.bind(this, 'POST');
-	post = this.add.bind(this, 'POST');
-
 	constructor({ server, onError }: HttpServerOptions = {}) {
 		super();
 		this._httpServer = server;
