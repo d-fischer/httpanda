@@ -3,16 +3,14 @@ export function pathToRegex(path: string, strict = true): [RegExp, string[]] {
 	const paramNames: string[] = [];
 	let re = '^';
 
-	if (!parts[0]) {
-		parts.shift();
-	}
-
 	for (const part of parts) {
-		if (part[0] === ':') {
-			paramNames.push(part.substr(1));
-			re += '/([^/]+?)';
-		} else {
-			re += `/${part}`;
+		if (part) {
+			if (part[0] === ':') {
+				paramNames.push(part.substr(1));
+				re += '/([^/]+?)';
+			} else {
+				re += `/${part}`;
+			}
 		}
 	}
 
