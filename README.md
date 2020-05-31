@@ -3,6 +3,7 @@
 - Lightweight and fast
 - Streamlined feature set, sufficient for most applications
 - Supports `express` (and `connect`) compatible middleware
+- Both CommonJS and ES module support via [tsukuru](https://www.npmjs.com/package/tsukuru)
 
 ## Basic usage
 
