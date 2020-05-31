@@ -22,10 +22,10 @@ export function parseQueryString(str: string) {
 			value = part.substr(eqPos + 1);
 		}
 		result[key] = Object.prototype.hasOwnProperty.call(result, key)
-			? value
-			: Array.isArray(result[key])
-			? [...result[key], value]
-			: [result[key], value];
+			? Array.isArray(result[key])
+				? [...result[key], value]
+				: [result[key], value]
+			: value;
 	}
 
 	return result;
