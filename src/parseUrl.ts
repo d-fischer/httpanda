@@ -5,9 +5,30 @@ export interface ParsedUrl {
 	href: string;
 	path: string;
 	pathname: string;
-	query: string | null;
+	query: Record<string, string | string[]>;
 	search: string | null;
 	/** @private */ _full: String;
+}
+
+export function parseQueryString(str: string) {
+	const result = {};
+
+	for (const part of str.split('&')) {
+		const eqPos = part.indexOf('=');
+		let key = '',
+			value = part;
+		if (eqPos !== -1) {
+			key = part.substr(0, eqPos);
+			value = part.substr(eqPos + 1);
+		}
+		result[key] = Object.prototype.hasOwnProperty.call(result, key)
+			? value
+			: Array.isArray(result[key])
+			? [...result[key], value]
+			: [result[key], value];
+	}
+
+	return result;
 }
 
 export function parseUrl(req: Request): ParsedUrl {
@@ -27,7 +48,7 @@ export function parseUrl(req: Request): ParsedUrl {
 			path: url,
 			pathname: url,
 			search: null,
-			query: null,
+			query: {},
 			_full: url
 		});
 	}
@@ -38,7 +59,7 @@ export function parseUrl(req: Request): ParsedUrl {
 		path: url,
 		pathname: url.substr(0, searchStart),
 		search,
-		query: search.substr(1),
+		query: parseQueryString(search.substr(1)),
 		_full: url
 	});
 }

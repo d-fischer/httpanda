@@ -1,10 +1,10 @@
 import { IncomingMessage, Server as HttpServer, ServerResponse } from 'http';
 import { ParsedUrl } from './parseUrl';
 
-export interface Request extends IncomingMessage, ParsedUrl {
+export interface Request extends IncomingMessage {
 	params: Record<string, string>;
 	path: string;
-	query: string | null;
+	query: Record<string, string | string[]>;
 	search: string | null;
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	/** @private */ _parseUrlCache?: ParsedUrl;
