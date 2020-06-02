@@ -1,8 +1,8 @@
 import { pathToRegex } from './pathToRegex';
-import { FoundCallbacks, HttpMethod, RouteCallback, RouteHandler } from './types';
+import { FoundCallback, HttpMethod, RequestHandler, RouteLayer } from './types';
 
 export class Router {
-	routes: RouteHandler[] = [];
+	routes: RouteLayer[] = [];
 
 	all = this.add.bind(this, undefined);
 	head = this.add.bind(this, 'HEAD');
@@ -15,7 +15,7 @@ export class Router {
 	connect = this.add.bind(this, 'CONNECT');
 	trace = this.add.bind(this, 'TRACE');
 
-	use(path: string, ...callbacks: RouteCallback[]) {
+	use(path: string, ...callbacks: RequestHandler[]) {
 		if (callbacks.length) {
 			const [regex, paramNames] = pathToRegex(path, false);
 			this.routes.push({ regex, paramNames, callbacks });
@@ -23,7 +23,7 @@ export class Router {
 		return this;
 	}
 
-	add(method: HttpMethod | undefined, path: string, ...callbacks: RouteCallback[]) {
+	add(method: HttpMethod | undefined, path: string, ...callbacks: RequestHandler[]) {
 		if (callbacks.length) {
 			const [regex, paramNames] = pathToRegex(path);
 			this.routes.push({ regex, method, paramNames, callbacks });
@@ -31,10 +31,10 @@ export class Router {
 		return this;
 	}
 
-	find(requestMethod: HttpMethod, requestPath: string): FoundCallbacks[] {
+	find(requestMethod: HttpMethod, requestPath: string): FoundCallback[] {
 		// we need this because GET handlers also need to respond to HEAD - and we don't want to check it on every iteration
 		const isHead = requestMethod === 'HEAD';
-		const foundCallbacks: FoundCallbacks[] = [];
+		const foundCallbacks: FoundCallback[] = [];
 
 		for (const { regex, method, paramNames, callbacks } of this.routes) {
 			if (!method || method === requestMethod || (isHead && method === 'GET')) {
@@ -46,10 +46,10 @@ export class Router {
 						for (const paramName of paramNames) {
 							params[paramName] = matches[i++];
 						}
-						foundCallbacks.push({ params: params, callbacks });
+						foundCallbacks.push(...callbacks.map(callback => ({ params: params, callback })));
 					}
 				} else if (regex.test(requestPath)) {
-					foundCallbacks.push({ params: {}, callbacks });
+					foundCallbacks.push(...callbacks.map(callback => ({ params: {}, callback })));
 				}
 			}
 		}

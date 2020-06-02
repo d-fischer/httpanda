@@ -2,7 +2,7 @@ import { createServer, Server as HttpServer, STATUS_CODES } from 'http';
 import { ListenOptions } from 'net';
 import { parseUrl } from './parseUrl';
 import { Router } from './Router';
-import { ErrorHandler, HttpMethod, HttpServerOptions, NextFunction, Request, Response, RouteCallback } from './types';
+import { ErrorHandler, HttpMethod, HttpServerOptions, NextFunction, Request, Response, RequestHandler } from './types';
 
 const defaultOnError: ErrorHandler = (e, req, res) => {
 	res.statusCode = e.code || e.status || 500;
@@ -16,7 +16,7 @@ const defaultOnError: ErrorHandler = (e, req, res) => {
 export class Server extends Router {
 	private _httpServer?: HttpServer;
 	private readonly _onError: ErrorHandler;
-	private readonly _on404: RouteCallback;
+	private readonly _on404: RequestHandler;
 
 	constructor({ server, onError }: HttpServerOptions = {}) {
 		super();
@@ -67,9 +67,9 @@ export class Server extends Router {
 		});
 	}
 
-	use(...fns: RouteCallback[]): this;
-	use(path: string, ...fns: RouteCallback[]): this;
-	use(pathOrFn: RouteCallback | string, ...fns: RouteCallback[]): this {
+	use(...fns: RequestHandler[]): this;
+	use(path: string, ...fns: RequestHandler[]): this;
+	use(pathOrFn: RequestHandler | string, ...fns: RequestHandler[]): this {
 		const path = (typeof pathOrFn === 'string' && pathOrFn) || '/';
 		const callbacks = typeof pathOrFn === 'string' ? fns : [pathOrFn, ...fns];
 
@@ -80,7 +80,7 @@ export class Server extends Router {
 		const parsedUrl = parseUrl(req);
 		const foundRoutes = this.find(req.method! as HttpMethod, parsedUrl.pathname);
 		foundRoutes.push({
-			callbacks: [this._on404],
+			callback: this._on404,
 			params: {}
 		});
 		const routeCount = foundRoutes.length;
@@ -88,9 +88,7 @@ export class Server extends Router {
 		req.query = parsedUrl.query;
 		req.search = parsedUrl.search;
 
-		let i = 0,
-			j = 0,
-			callbackCountForRoute = foundRoutes[0].callbacks.length;
+		let i = 0;
 		req.params = foundRoutes[0].params;
 		let loop: Function;
 		const next: NextFunction = e => {
@@ -104,15 +102,12 @@ export class Server extends Router {
 		try {
 			loop = () => {
 				if (!res.writableEnded) {
-					if (j >= callbackCountForRoute) {
-						if (++i >= routeCount) {
-							return;
-						}
-						j = 0;
-						req.params = foundRoutes[i].params;
-						callbackCountForRoute = foundRoutes[i].callbacks.length;
+					if (i >= routeCount) {
+						return;
 					}
-					foundRoutes[i].callbacks[j++](req, res, next);
+					req.params = foundRoutes[i].params;
+					const callback = foundRoutes[i++].callback;
+					callback(req, res, next);
 				}
 			};
 
