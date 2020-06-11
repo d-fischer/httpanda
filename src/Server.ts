@@ -89,7 +89,6 @@ export class Server extends Router {
 		req.search = parsedUrl.search;
 
 		let i = 0;
-		req.params = foundRoutes[0].params;
 		let loop: Function;
 		const next: NextFunction = e => {
 			if (e) {
@@ -105,7 +104,7 @@ export class Server extends Router {
 					if (i >= routeCount) {
 						return;
 					}
-					req.params = foundRoutes[i].params;
+					req.param = req.params = foundRoutes[i].params;
 					const callback = foundRoutes[i++].callback;
 					callback(req, res, next);
 				}

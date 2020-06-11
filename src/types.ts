@@ -3,6 +3,7 @@ import { ParsedUrl } from './parseUrl';
 
 export interface Request extends IncomingMessage {
 	params: Record<string, string>;
+	param: Record<string, string>;
 	path: string;
 	query: Record<string, string | string[]>;
 	search: string | null;
