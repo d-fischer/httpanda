@@ -3,6 +3,7 @@ import { ListenOptions } from 'net';
 import { parseUrl } from './parseUrl';
 import { Router } from './Router';
 import { ErrorHandler, HttpMethod, HttpServerOptions, NextFunction, Request, Response, RequestHandler } from './types';
+import { dropComponents } from './dropComponents';
 
 const defaultOnError: ErrorHandler = (e, req, res) => {
 	res.statusCode = e.code || e.status || 500;
@@ -81,7 +82,8 @@ export class Server extends Router {
 		const foundRoutes = this.find(req.method! as HttpMethod, parsedUrl.pathname);
 		foundRoutes.push({
 			callback: this._on404,
-			params: {}
+			params: {},
+			componentsToDrop: 0
 		});
 		const routeCount = foundRoutes.length;
 		req.path = parsedUrl.pathname;
@@ -104,8 +106,10 @@ export class Server extends Router {
 					if (i >= routeCount) {
 						return;
 					}
-					req.param = req.params = foundRoutes[i].params;
-					const callback = foundRoutes[i++].callback;
+					const foundRoute = foundRoutes[i++];
+					req.path = dropComponents(parsedUrl.pathname, foundRoute.componentsToDrop);
+					req.param = req.params = { ...req.params, ...foundRoute.params };
+					const callback = foundRoute.callback;
 					callback(req, res, next);
 				}
 			};

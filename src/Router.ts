@@ -17,8 +17,8 @@ export class Router {
 
 	use(path: string, ...callbacks: RequestHandler[]) {
 		if (callbacks.length) {
-			const [regex, paramNames] = pathToRegex(path, false);
-			this.routes.push({ regex, paramNames, callbacks });
+			const [regex, paramNames, componentsToDrop] = pathToRegex(path, false);
+			this.routes.push({ regex, paramNames, callbacks, componentsToDrop });
 		}
 		return this;
 	}
@@ -26,7 +26,7 @@ export class Router {
 	add(method: HttpMethod | undefined, path: string, ...callbacks: RequestHandler[]) {
 		if (callbacks.length) {
 			const [regex, paramNames] = pathToRegex(path);
-			this.routes.push({ regex, method, paramNames, callbacks });
+			this.routes.push({ regex, method, paramNames, callbacks, componentsToDrop: 0 });
 		}
 		return this;
 	}
@@ -36,7 +36,7 @@ export class Router {
 		const isHead = requestMethod === 'HEAD';
 		const foundCallbacks: FoundCallback[] = [];
 
-		for (const { regex, method, paramNames, callbacks } of this.routes) {
+		for (const { regex, method, paramNames, callbacks, componentsToDrop } of this.routes) {
 			if (!method || method === requestMethod || (isHead && method === 'GET')) {
 				if (paramNames.length) {
 					const matches = regex.exec(requestPath);
@@ -46,10 +46,10 @@ export class Router {
 						for (const paramName of paramNames) {
 							params[paramName] = matches[i++];
 						}
-						foundCallbacks.push(...callbacks.map(callback => ({ params: params, callback })));
+						foundCallbacks.push(...callbacks.map(callback => ({ params, callback, componentsToDrop })));
 					}
 				} else if (regex.test(requestPath)) {
-					foundCallbacks.push(...callbacks.map(callback => ({ params: {}, callback })));
+					foundCallbacks.push(...callbacks.map(callback => ({ params: {}, callback, componentsToDrop })));
 				}
 			}
 		}

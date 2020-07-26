@@ -32,9 +32,11 @@ export interface RouteLayer {
 	method?: HttpMethod;
 	paramNames: string[];
 	callbacks: RequestHandler[];
+	componentsToDrop: number;
 }
 
 export interface FoundCallback {
 	params: Record<string, string>;
 	callback: RequestHandler;
+	componentsToDrop: number;
 }
