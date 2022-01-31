@@ -10,7 +10,7 @@ export interface ParsedUrl {
 	/** @private */ _full: String;
 }
 
-export function parseQueryString(str: string) {
+export function parseQueryString(str: string): Record<string, string | string[]> {
 	const result = {};
 
 	for (const part of str.split('&')) {

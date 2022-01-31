@@ -15,7 +15,7 @@ export class Router {
 	connect = this.add.bind(this, 'CONNECT');
 	trace = this.add.bind(this, 'TRACE');
 
-	use(path: string, ...callbacks: RequestHandler[]) {
+	use(path: string, ...callbacks: RequestHandler[]): this {
 		if (callbacks.length) {
 			const [regex, paramNames, componentsToDrop] = pathToRegex(path, false);
 			this.routes.push({ regex, paramNames, callbacks, componentsToDrop });
@@ -23,7 +23,7 @@ export class Router {
 		return this;
 	}
 
-	add(method: HttpMethod | undefined, path: string, ...callbacks: RequestHandler[]) {
+	add(method: HttpMethod | undefined, path: string, ...callbacks: RequestHandler[]): this {
 		if (callbacks.length) {
 			const [regex, paramNames] = pathToRegex(path);
 			this.routes.push({ regex, method, paramNames, callbacks, componentsToDrop: 0 });
