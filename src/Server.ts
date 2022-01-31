@@ -5,7 +5,7 @@ import { Router } from './Router';
 import { ErrorHandler, HttpMethod, HttpServerOptions, NextFunction, Request, Response, RequestHandler } from './types';
 import { dropComponents } from './dropComponents';
 
-const defaultOnError: ErrorHandler = (e, req, res) => {
+export const defaultOnError: ErrorHandler = (e, req, res) => {
 	res.statusCode = e.code || e.status || 500;
 	if (typeof e === 'string') {
 		res.end(e);
@@ -52,7 +52,7 @@ export class Server extends Router {
 		});
 	}
 
-	async close() {
+	async close(): Promise<void> {
 		return new Promise((resolve, reject) => {
 			if (!this._httpServer) {
 				reject('Server not open when trying to close');
