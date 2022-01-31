@@ -7,6 +7,7 @@ import { dropComponents } from './dropComponents';
 
 export const defaultOnError: ErrorHandler = (e, req, res) => {
 	res.statusCode = e.code || e.status || 500;
+	res.setHeader('Content-Type', 'text/plain');
 	if (typeof e === 'string') {
 		res.end(e);
 	} else {
