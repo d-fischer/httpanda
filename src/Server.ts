@@ -43,13 +43,16 @@ export class Server extends Router {
 				this._httpServer = createServer();
 			}
 			this._httpServer.on('request', this.handleRequest);
-			this._httpServer.listen.call(this._httpServer, ...args, (e: Error) => {
-				if (e) {
-					reject(e);
-				} else {
-					resolve(this);
+			this._httpServer.listen.apply(this._httpServer, [
+				...args,
+				(e: Error) => {
+					if (e) {
+						reject(e);
+					} else {
+						resolve(this);
+					}
 				}
-			});
+			]);
 		});
 	}
 

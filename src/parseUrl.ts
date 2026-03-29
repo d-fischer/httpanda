@@ -11,7 +11,7 @@ export interface ParsedUrl {
 }
 
 export function parseQueryString(str: string): Record<string, string | string[]> {
-	const result = {};
+	const result: Record<string, string | string[]> = {};
 
 	for (const part of str.split('&')) {
 		const eqPos = part.indexOf('=');
@@ -23,8 +23,8 @@ export function parseQueryString(str: string): Record<string, string | string[]>
 		}
 		result[key] = Object.prototype.hasOwnProperty.call(result, key)
 			? Array.isArray(result[key])
-				? [...result[key], value]
-				: [result[key], value]
+				? [...(result[key] as string[]), value]
+				: [result[key] as string, value]
 			: value;
 	}
 

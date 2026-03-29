@@ -2,11 +2,10 @@
 	"compilerOptions": {
 		"rootDir": "src",
 		"outDir": "lib",
-		"module": "commonjs",
-		"target": "es5",
-		"lib": ["esnext"],
+		"module": "node16",
+		"moduleResolution": "node16",
+		"target": "es2022",
 		"sourceMap": true,
-		"moduleResolution": "node",
 		"declaration": true,
 		"forceConsistentCasingInFileNames": true,
 		"noImplicitReturns": true,
@@ -14,10 +13,9 @@
 		"strict": true,
 		"strictFunctionTypes": false,
 		"strictPropertyInitialization": false,
-		"suppressImplicitAnyIndexErrors": true,
 		"noUnusedLocals": true,
 		"experimentalDecorators": true,
-		"downlevelIteration": true
+		"types": ["node"]
 	},
-	"exclude": ["node_modules", "lib", "es"]
+	"exclude": ["node_modules", "lib"]
 }
